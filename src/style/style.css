@@ -1,0 +1,13 @@
+canvas {
+    background-color: black;
+    padding: 0;
+    margin: auto;
+    display: block;
+    width: 100%;
+    max-width: 1000px;
+    outline: solid 2px white;
+}
+
+body {
+    background-color: black;
+}
