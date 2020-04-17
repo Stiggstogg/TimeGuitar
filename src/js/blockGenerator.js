@@ -10,16 +10,11 @@ class BlockGenerator {
      */
     constructor(freq, sz, spd, dist) {
 
-        this.blocks = [];                                                       // block array (array of sprites)
-
         this.frequency = {min: freq.min / 1000, max: freq.max / 1000};          // appearance frequency (minimum and maximum) of blocks in 1/ms
         this.size = {min: sz.min * canvasWidth, max: sz.max * canvasWidth};     // size (minimum and maximum) of blocks (in px)
         this.speed = spd;                                                       // block speed (in px / frame)
         this.distance = dist * canvasWidth;                                     // minimum block distance (in px)
 
-        this.nextBlockTime = this.getNextBlockTime();
-
-        this.createNewBlock();
     }
 
     /**
@@ -134,6 +129,14 @@ class BlockGenerator {
             }
         });
 
+    }
+
+    /**
+     * Starts the block generator. Can also be used to restart the block generator
+     */
+    start() {
+        this.blocks = [];                   // create an empty block array
+        this.createNewBlock();              // create the first block
     }
 
 }
