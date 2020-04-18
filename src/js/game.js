@@ -40,13 +40,15 @@ const playerSettings = {
 const blockSettings = {
     frequency: {min: 1.5, max: 7},          // appearance frequency of new blocks (in blocks / s)
     size: {min: 0.02, max: 0.05},           // block sizes (relative to canvas width)
+    speed: generalSettings.worldSpeed,      // block speed (canvas width / s)
     distance: playerSettings.height*1.5     // minimum distance between blocks (relative to canvas width)
 }
 
 // Settings for the notes (which need to be collected)
 const noteSettings = {
     frequency: {min: 0.05, max: 0.1},       // appearance frequency of new blocks (in blocks / s)
-    size: 0.02                              // note size (relative to canvas width)
+    size: 0.02,                             // note size (relative to canvas width)
+    speed: blockSettings.speed              // note speed (canvas width / s)
 }
 
 
@@ -56,7 +58,7 @@ Initialization
 ==========================
  */
 
-// Calculate world speed from widths / x to px / frame (assuming 60 fps)
+// Calculate world speed from widths / s to px / frame (assuming 60 fps)
 const worldSpeed = generalSettings.worldSpeed * canvasWidth / 60;
 
 // Create the player sprite
@@ -72,12 +74,6 @@ let player = new PlayerSprite({                               // create
 player.position.clamp(player.width/2, player.height/2,
     canvasWidth-player.width/2, canvasHeight-player.height/2);
 
-/*
-==========================
-Testing
-==========================
- */
-
 
 /*
 ==========================
@@ -86,7 +82,7 @@ World generation
  */
 
 // Create the block generator
-blockGen = new BlockGenerator(blockSettings.frequency, blockSettings.size, worldSpeed, blockSettings.distance);
+generator = new Generator(blockSettings, noteSettings);
 
 /*
 ==========================
@@ -97,16 +93,17 @@ Game Loop
 let loop = GameLoop({
     update: function () {
 
-        // Blocks
-        blockGen.check();       // Check for and create new blocks
-        blockGen.updateAll();   // Update all blocks
+        // Blocks and notes
+        generator.newBlock();       // Check for and create new blocks
+        generator.newNote();       // Check for and create new notes
+        generator.updateAll();   // Update all blocks
 
         // Player
         player.movement();       // Set movement speed of player
         player.update();        // Update player
 
         // Collision detection
-        if (player.blockCollide(blockGen.blocks)) {
+        if (player.blockCollide(generator.blocks)) {
             initNewGame();
         }
 
@@ -116,11 +113,10 @@ let loop = GameLoop({
     render: function () {
 
         // Blocks
-        blockGen.renderAll();   // Render all blocks
+        generator.renderAll();   // Render all blocks
 
         // Player
         player.render();        // Render player
-
 
     }
 
@@ -144,8 +140,20 @@ function initNewGame() {
     player.dy = 0;
 
     // Reset the block generator
-    blockGen.start();
+    generator.start();
 }
+
+/*
+==========================
+Testing
+==========================
+ */
+
+/*
+==========================
+Start
+==========================
+ */
 
 initNewGame();
 loop.start();               // start loop
