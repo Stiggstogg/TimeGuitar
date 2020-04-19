@@ -70,7 +70,7 @@ class Generator {
     }
 
     /**
-     * Check if two rectangles (with anchor {x: 0, y: 0.5}!!!)are too close to each other (not separated by the minimum distance).
+     * Check if two rectangles (with anchor {x: 0, y: 0.5}!!!) are too close to each other (not separated by the minimum distance).
      * @param {{x: {number}, y: {number}, width: {number}, height: {number}}} r1 - First rectangle (position and dimensions), anchor for this rectangle is assumed to be at {x: 0, y: 0.5}
      * @param {{x: {number}, y: {number}, width: {number}, height: {number}}} r2 - Second rectangle (position and dimensions), anchor for this rectangle is assumed to be at {x: 0, y: 0.5}
      * @param {{x: {number}, y: {number}}} distance - Minimum distance between the two rectangles which
@@ -101,13 +101,51 @@ class Generator {
     }
 
     /**
+     * Checks if two lines (e.g. projections of squares on a axis) overlap. If they overlap this function provides true.
+     * @param {number} a1 - First point of the first line
+     * @param {number} a2 - Second point of the first line
+     * @param {number} b1 - First point of the second line
+     * @param {number} b2 - Second point of the second line
+     * @returns {boolean|boolean}
+     */
+    axisOverlap(a1, a2, b1, b2) {
+        return a2 > b1 && b2 > a1;
+    }
+
+    /**
+     * Checks if a note (with anchor {x: 0, y: 0.5}!!!) is trapped between the lower and upper edges of the canvas and a block (with anchor {x: 0, y: 0.5}!!!). This avoids that a
+     * note is not reachable. If there is not enough space between the block and the canvas limit the function returns
+     * true
+     * @param {{x: {number}, y: {number}, width: {number}, height: {number}}} note - Note rectangle (position and dimensions), anchor for this rectangle is assumed to be at {x: 0, y: 0.5}
+     * @param {{x: {number}, y: {number}, width: {number}, height: {number}}} block - Block rectangle (position and dimensions), anchor for this rectangle is assumed to be at {x: 0, y: 0.5}
+     * @param {{x: {number}, y: {number}}} distance - Minimum distance between the two rectangles which
+     * @returns {boolean|boolean}
+     */
+    isTrapped(note, block, distance) {
+
+        // Calculate y-coordinates of edges as anchor is {x: 0, y: 0.5}
+        const blockUpperEdgeY = block.y - block.height/2;
+        const blockLowerEdgeY = block.y + block.height/2;
+        const noteUpperEdgeY = note.y - note.height/2;
+        const noteLowerEdgeY = note.y + note.height/2;
+
+        return this.axisOverlap(note.x, note.x + note.width, block.x - note.width/2,
+            block.x + block.width + note.width/2) &&                                        // check if the projections to the x-axis of note and block overlap
+            (
+                ( blockUpperEdgeY < distance.y && blockUpperEdgeY > 0 && noteLowerEdgeY < blockUpperEdgeY ) ||                          // check if the block is to close to the upper canvas limit (but still a gap is available) and check if note is between it
+                ( blockLowerEdgeY > canvasHeight - distance.y && blockLowerEdgeY < canvasHeight && noteUpperEdgeY > blockLowerEdgeY )   // check if the block is to close to the lower canvas limit (but still a gap is available) and check if note is between it
+            );
+
+    }
+
+    /**
      * Creates a new block and adds it to the block array. The block is only created if the distance to the other blocks
      * is large enough (to avoid that blocks can block the way of the player)
      */
     createNewBlock() {
 
         // Calculate next block parameters (size and position)
-        const position = Vector(600, Math.random() * canvasHeight);                // position vector
+        const position = Vector(canvasWidth*1.2, Math.random() * canvasHeight);                // position vector, blocks are created earlier (outside of the canvas) so that later notes are added. In this the distance to notes does not need to be checked.
         const width = this.bSettings.size.min + (this.bSettings.size.max - this.bSettings.size.min) * Math.random();     // width
         const height = this.bSettings.size.min + (this.bSettings.size.max - this.bSettings.size.min) * Math.random();    // height
 
@@ -122,7 +160,7 @@ class Generator {
         let distance = {x: this.bSettings.distance,   // distance to other blocks
             y: this.bSettings.distance};
 
-        // Check distance to each existing block
+        // Check distance to each existing blocks
         for (let i = 0; i < this.blocks.length; i++) {
 
             // create rectangle object for the comparison (rectangle 2)
@@ -135,30 +173,6 @@ class Generator {
             if (this.tooClose(newBlock, existingBlock, distance)) {
                 create = false;
                 break;
-            }
-        }
-
-        // If the new block is not too close to another, check distance to notes (avoid overlap)
-        if (create) {
-
-            // set distance between notes and blocks to 0
-            distance.x = 0;
-            distance.y = 0;
-
-            // Check distance to notes (avoid overlap)
-            for (let i = 0; i < this.notes.length; i++) {
-
-                // create rectangle object for the comparison (rectangle 2)
-                let existingNote = {x: this.notes[i].x,
-                    y: this.notes[i].y,
-                    width: this.notes[i].width,
-                    height: this.notes[i].height};
-
-                // If the potential block would be too close to an existing block the "create" variable is set to "false"
-                if (this.tooClose(newBlock, existingNote, distance)) {
-                    create = false;
-                    break;
-                }
             }
         }
 
@@ -199,9 +213,9 @@ class Generator {
             y: position.y,
             width: width,
             height: height};
-        const distance = {x: 0, y: 0}   // distance
+        const distance = {x: 0, y: 0}                   // distance
 
-        // Check distance to each existing block
+        // Check distance to each existing block (position to other notes does not need to be checked as they appear in a much lower frequency)
         for (let i = 0; i < this.blocks.length; i++) {
 
             // create rectangle object for the comparison (rectangle 2)
@@ -210,13 +224,14 @@ class Generator {
                 width: this.blocks[i].width,
                 height: this.blocks[i].height};
 
-            // If the potential note would be too close to an existing block the "create" variable is set to "false"
-            if (this.tooClose(newNote, existingBlock, distance)) {
+            // If the potential note would be too close to an existing block or trapped (not reachable without touching
+            // a block) between a block and the canvas limit the "create" variable is set to "false"
+            if (this.tooClose(newNote, existingBlock, distance) ||
+                this.isTrapped(newNote, existingBlock,{x: this.bSettings.distance, y: this.bSettings.distance})) {
                 create = false;
                 break;
             }
         }
-        // TODO: Avoid cases where notes are not reachable (between wall and block)!
 
         // if the potential block is far enough away from the other blocks (create = true), create the sprite
         if (create) {
@@ -260,8 +275,8 @@ class Generator {
     renderAll() {
 
         this.setVisibility(this.blocks);    // check visibility of all blocks and set accordingly
-        this.setVisibility(this.notes);     // check visibility of all notes and set accordingly
 
+        // render block
         this.blocks.forEach(function(b) {
 
                 // render only the blocks which are visible (within canvas)
@@ -270,12 +285,10 @@ class Generator {
                 }
         });
 
+        // render notes
         this.notes.forEach(function(n) {
 
-            // render only the blocks which are visible (within canvas)
-            if (n.visible) {
                 n.render();
-            }
         });
     }
 
@@ -295,6 +308,22 @@ class Generator {
                 e.visible = true;                                               // make visible
             }
         });
+    }
+
+    /**
+     * Checks if any of the notes left the canvas on the left side (note was not collected). If this is the case
+     * true is returned.
+     * @returns {boolean} - true if one of the notes left the canvas (was forgotten)
+     */
+    lostNote() {
+
+        for (let i = 0; i < this.notes.length; i++) {
+            if (this.notes[i].x + this.notes[i].width < 0) {                      // right edge of note left the canvas
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

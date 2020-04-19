@@ -47,4 +47,17 @@ class PlayerSprite extends Sprite.class {
         return false;
     }
 
+    noteCollide(notes) {
+        let collide = false;
+
+        for (let i = 0; i < notes.length; i++) {
+            if (this.collidesWith(notes[i])) {
+                notes.splice(i,1);                  // delete this note
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 }

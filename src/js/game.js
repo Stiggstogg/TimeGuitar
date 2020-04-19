@@ -74,6 +74,10 @@ let player = new PlayerSprite({                               // create
 player.position.clamp(player.width/2, player.height/2,
     canvasWidth-player.width/2, canvasHeight-player.height/2);
 
+// Scores object
+let scores = {
+    notes: 0
+}
 
 /*
 ==========================
@@ -102,11 +106,20 @@ let loop = GameLoop({
         player.movement();       // Set movement speed of player
         player.update();        // Update player
 
-        // Collision detection
+        // Collision detection: Player - block
         if (player.blockCollide(generator.blocks)) {
-            initNewGame();
+            initNewGame();          // if collision happens: GAME OVER
         }
 
+        // Collision detection: Player - note
+        if (player.noteCollide(generator.notes)) {
+            scores.notes++;         // if collision happens: Note disappears and note score is increased
+        }
+
+        // Check if a note left the canvas (was forgotten to collect)
+        if (generator.lostNote()) {
+            initNewGame();
+        }
 
     },
 
@@ -141,6 +154,9 @@ function initNewGame() {
 
     // Reset the block generator
     generator.start();
+
+    // Reset scores
+    scores.notes = 0;
 }
 
 /*
@@ -148,6 +164,9 @@ function initNewGame() {
 Testing
 ==========================
  */
+
+console.log(generator.isTrapped({x:2, y:0.5, width: 1, height: 1}, {x:2, y:5, width:2, height:2}, {x: 1, y:3}));
+
 
 /*
 ==========================
