@@ -1,7 +1,7 @@
 class State {
 
     /**
-     * Constructor for the state class. A state object represents a state in the game.
+     * Constructor for the state class. A state object represents a state in the game (e.g loading, menu, game,...).
      * @param {string} name - Name of the state.
      * @param {function} update - Update function of this state.
      * @param {function} render - Render function of this state.
@@ -15,5 +15,6 @@ class State {
         this.render = render;
         this.onEnter = onEnter;
         this.onExit = onExit;
+
     }
 }

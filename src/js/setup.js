@@ -62,6 +62,7 @@ const noteSettings = {
     speed: blockSettings.speed              // note speed (canvas width / s)
 }
 
+
 /*
 ==========================
 Initialization

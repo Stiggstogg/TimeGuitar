@@ -9,6 +9,7 @@ let stateForward = new State(
 
     // Update
     function(){
+
         // Blocks and notes
         generator.newBlock();       // Check for and create new blocks
         generator.newNote();       // Check for and create new notes
@@ -20,7 +21,7 @@ let stateForward = new State(
 
         // Collision detection: Player - block
         if (player.blockCollide(generator.blocks)) {
-            gameStates.changeTo('forward');          // if collision happens: GAME OVER TODO: Change to another state!
+            gameStates.changeTo('over');          // if collision happens: GAME OVER TODO: Change to another state!
         }
 
         // Collision detection: Player - note
@@ -30,7 +31,12 @@ let stateForward = new State(
 
         // Check if a note left the canvas (was forgotten to collect) TODO: Change to another state
         if (generator.lostNote()) {
-            gameStates.changeTo('forward');
+            gameStates.changeTo('over');
+        }
+
+        // Check if 'Space' is pressed (to travel back in time) and change the game state to backward
+        if (keyPressed('space') && gameStates.getTimeInCurrentState() > 3) {
+            gameStates.changeTo('backward');
         }
     },
 
@@ -45,6 +51,8 @@ let stateForward = new State(
 
     // On Enter
     function(){
+
+        console.log('enter forward');
 
         // Set player at starting position and speed
         player.x = playerSettings.startPosition.x * canvasWidth;

@@ -5,6 +5,9 @@ class PlayerSprite extends Sprite.class {
     constructor(properties) {
 
         super(properties);
+
+        // Set the direction of the player (1: forward (from left to right), 0: backward (from right to left))
+        this.direction = 1;
     }
 
     /**
@@ -12,7 +15,7 @@ class PlayerSprite extends Sprite.class {
      */
     movement() {
 
-        let speed = Vector(-worldSpeed, 0); // speed vector of the player (set starting speed)
+        let speed = Vector(-worldSpeed*this.direction, 0); // speed vector of the player (set starting speed)
 
         // check each key and add the contribution of this direction to the speed vector
         if (keyPressed('up')){
@@ -58,6 +61,15 @@ class PlayerSprite extends Sprite.class {
         }
 
         return false;
+    }
+
+    /**
+     * Changes the moving direction of the player:
+     * 1: forward (from left to right)
+     * -1: backward (from right to left)
+     */
+    changeDirection() {
+        this.direction = -this.direction;
     }
 
 }

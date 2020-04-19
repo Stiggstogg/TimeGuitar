@@ -340,5 +340,19 @@ class Generator {
         this.createNewNote();               // create the first note
     }
 
+    /**
+     * Changes the moving direction of all blocks and notes
+     */
+    changeDirection() {
+
+        this.blocks.forEach(function (b) {
+            b.dx = -b.dx;
+        });
+
+        this.notes.forEach(function (n) {
+            n.dx = -n.dx;
+        })
+    }
+
 }
 
