@@ -16,10 +16,16 @@ let stateBackward = new State(
         // Player
         player.movement();          // Set movement speed of player
         player.update();            // Update player
+        player.checkTrace(generator.getZeroPointX());
 
         // Collision detection: Player - block
         if (player.blockCollide(generator.blocks)) {
             gameStates.changeTo('over');          // if collision happens: GAME OVER
+        }
+
+        // Check if player is already back at the start
+        if (player.isBack(generator.getZeroPointX())) {
+            gameStates.changeTo('finish');
         }
 
     },
@@ -37,8 +43,7 @@ let stateBackward = new State(
     // On Enter
     function(){
 
-        console.log('enter backward');
-
+        // change direction to backward
         player.changeDirection();
         generator.changeDirection();
     },
@@ -46,8 +51,13 @@ let stateBackward = new State(
     // On Exit
     function(){
 
+        // Change direction back to forward
         player.changeDirection();
         generator.changeDirection();
+
+        // Set trace score (in %)
+        scores.trace = player.getTraceScore() * 100;
+
 
     }
 );

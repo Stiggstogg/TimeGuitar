@@ -255,7 +255,7 @@ class Generator {
     }
 
     /**
-     * Updates all blocks and notes in the arrays
+     * Updates all blocks and notes in the arrays as well as the zero point
      */
     updateAll() {
         this.blocks.forEach(function(b) {
@@ -267,6 +267,9 @@ class Generator {
                 n.update();
             }
         );
+
+        this.zeroPoint.update();
+
     }
 
     /**
@@ -338,10 +341,21 @@ class Generator {
         // Create first note and block
         this.createNewBlock();              // create the first block
         this.createNewNote();               // create the first note
+
+        // create the zero point sprite (to calculate absolute position)
+        this.zeroPoint = Sprite({
+            x: 0,
+            y: 0,
+            anchor: {x: 0, y: 1},
+            width: 1,
+            height: 1,
+            color: 'black',
+            dx: -this.bSettings.speed
+        });
     }
 
     /**
-     * Changes the moving direction of all blocks and notes
+     * Changes the moving direction of all blocks and notes as well as the zero point
      */
     changeDirection() {
 
@@ -352,6 +366,16 @@ class Generator {
         this.notes.forEach(function (n) {
             n.dx = -n.dx;
         })
+
+        this.zeroPoint.dx = -this.zeroPoint.dx;
+    }
+
+    /**
+     * Provides the x-coordinate of the zero point (to be used to calculate absolute positions)
+     * @returns {number} - x-coordinate of the zero point
+     */
+    getZeroPointX() {
+        return this.zeroPoint.x;
     }
 
 }

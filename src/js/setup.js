@@ -5,9 +5,9 @@ Initialize Kontra.js
 */
 
 let {init, GameLoop, initKeys, keyPressed, Vector} = kontra;        // initialize Kontra (and objects)
-let {canvas, context} = init();                                             // get canvas and context
+let {canvas, context} = init();                                     // get canvas and context
 
-initKeys();                                                                 // initialize Keyboard support
+initKeys();                                                         // initialize Keyboard support
 
 
 /*
@@ -87,7 +87,8 @@ player.position.clamp(player.width/2, player.height/2,
 
 // Scores object
 let scores = {
-    notes: 0
+    notes: 0,
+    trace: 0
 }
 
 /*

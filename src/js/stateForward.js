@@ -18,10 +18,11 @@ let stateForward = new State(
         // Player
         player.movement();       // Set movement speed of player
         player.update();        // Update player
+        player.setTrace(generator.getZeroPointX()); // Set a trace point at the current (absolute position)
 
         // Collision detection: Player - block
         if (player.blockCollide(generator.blocks)) {
-            gameStates.changeTo('over');          // if collision happens: GAME OVER TODO: Change to another state!
+            gameStates.changeTo('over');          // if collision happens: GAME OVER
         }
 
         // Collision detection: Player - note
@@ -29,7 +30,7 @@ let stateForward = new State(
             scores.notes++;         // if collision happens: Note disappears and note score is increased
         }
 
-        // Check if a note left the canvas (was forgotten to collect) TODO: Change to another state
+        // Check if a note left the canvas (was forgotten to collect)
         if (generator.lostNote()) {
             gameStates.changeTo('over');
         }
@@ -52,19 +53,21 @@ let stateForward = new State(
     // On Enter
     function(){
 
-        console.log('enter forward');
-
         // Set player at starting position and speed
         player.x = playerSettings.startPosition.x * canvasWidth;
         player.y = playerSettings.startPosition.y * canvasHeight;
         player.dx = -worldSpeed;
         player.dy = 0;
 
+        // Reset the player
+        player.reset();
+
         // Reset the block generator
         generator.start();
 
         // Reset scores
         scores.notes = 0;
+        scores.trace = 0;
     },
 
     // On Exit
