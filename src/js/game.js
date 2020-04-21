@@ -25,5 +25,5 @@ Start
 ==========================
  */
 
-gameStates.changeTo('forward');    // change to the first game state TODO: Adapt when the loading and menu is added
+gameStates.changeTo('loading');    // change to the first game state TODO: Adapt when the loading and menu is added
 loop.start();                            // start loop

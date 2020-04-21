@@ -4,7 +4,7 @@ Initialize Kontra.js
 ==========================
 */
 
-let {init, GameLoop, initKeys, keyPressed, Vector} = kontra;        // initialize Kontra (and objects)
+let {init, GameLoop, initKeys, keyPressed, Vector, load, on, setImagePath, imageAssets} = kontra;        // initialize Kontra (and objects)
 let {canvas, context} = init();                                     // get canvas and context
 
 initKeys();                                                         // initialize Keyboard support
@@ -62,24 +62,22 @@ const noteSettings = {
     speed: blockSettings.speed              // note speed (canvas width / s)
 }
 
-
 /*
 ==========================
-Initialization
+Variable initialization
 ==========================
  */
 
 // Calculate world speed from widths / s to px / frame (assuming 60 fps)
 const worldSpeed = generalSettings.worldSpeed * canvasWidth / 60;
 
-// Create the player sprite
-let player = new PlayerSprite({                               // create
+let player = new PlayerSprite({
+    x: 100,
+    y: 100,
     anchor: {x: 0.5, y: 0.5},
-    width: playerSettings.width * canvas.width,
-    height: playerSettings.height * canvas.width,
-    color: 'red',
     speed: worldSpeed*3
 });
+
 
 // make sure the player can't move out of the canvas
 player.position.clamp(player.width/2, player.height/2,

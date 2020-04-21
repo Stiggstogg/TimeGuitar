@@ -49,6 +49,8 @@ class StateStack {
         this.currentState = this.getStateByName(stateName);
         this.currentStateStart = Date.now();
 
+        console.log(this.states);
+
         this.currentState.onEnter();
 
     }
