@@ -44,14 +44,12 @@ class StateStack {
      */
     changeTo(stateName) {
 
-        this.currentState.onExit();
+        this.currentState.onExit();                             // execute onExit part of current state (finish state)
 
-        this.currentState = this.getStateByName(stateName);
-        this.currentStateStart = Date.now();
+        this.currentState = this.getStateByName(stateName);     // change to the other state
+        this.currentStateStart = Date.now();                    // set the state start time
 
-        console.log(this.states);
-
-        this.currentState.onEnter();
+        this.currentState.onEnter();                            // execute onEnter part of current state (startup state)
 
     }
 

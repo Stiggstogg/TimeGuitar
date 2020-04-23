@@ -37,6 +37,26 @@ class PlayerSprite extends Sprite.class {
 
         this.velocity = speed;         // set the calculated vector as the players speed (velocity vector)
 
+        // set the animation depending on if the player is moving or not and in which direction
+        if (speed.x === -worldSpeed*this.direction && speed.y === 0) {          // not moving
+
+            if (this.lookRight) {                                               // looking right
+                this.playAnimation('rightStand');
+            }
+            else {                                                              // looking left
+                this.playAnimation('leftStand');
+            }
+        }
+        else if (speed.x > -worldSpeed*this.direction || (speed.y !== 0 && this.lookRight)) { // moving right or moving up or down and looking right
+            this.playAnimation('rightWalk');
+            this.lookRight = true;                      // set orientation (look direction)
+        }
+        else if (speed.x < -worldSpeed*this.direction || (speed.y !== 0 && !this.lookRight)) { // moving left or moving up or down and looking left
+            this.playAnimation('leftWalk');
+            this.lookRight = false;                     // set orientation (look direction)
+        }
+
+
     }
 
     blockCollide(blocks) {
@@ -139,7 +159,9 @@ class PlayerSprite extends Sprite.class {
         this.outOfTrace = 0;        // initialize the out of trace counter
         this.onTrace = 0;           // initialize the on trace counter
 
-        this.startX = this.x;   // Set start position
+
+        this.startX = this.x;       // Set start position
+        this.lookRight = true;      // Set in which direction the character is looking
     }
 
     /**

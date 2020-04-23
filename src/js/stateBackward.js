@@ -10,6 +10,13 @@ let stateBackward = new State(
     // Update
     function(){
 
+        //Start line
+        startLine.update();     // update
+
+        if (startLine.x > 0) {  // avoid that start line moves too far to the right
+            startLine.x = 0;
+        }
+
         // Blocks and notes
         generator.updateAll();      // Update all blocks and notes
 
@@ -33,6 +40,14 @@ let stateBackward = new State(
     // Render
     function(){
 
+        // Background ans start
+        background.render();
+
+        // Start line (only render when it is within the canvas
+        if (startLine.x >= -startLine.width) {
+            startLine.render();
+        }
+
         // Blocks and notes
         generator.renderAll();   // Render all blocks and notes
 
@@ -46,6 +61,7 @@ let stateBackward = new State(
         // change direction to backward
         player.changeDirection();
         generator.changeDirection();
+        startLine.dx = -startLine.dx;
     },
 
     // On Exit
@@ -54,6 +70,7 @@ let stateBackward = new State(
         // Change direction back to forward
         player.changeDirection();
         generator.changeDirection();
+        startLine.dx = -startLine.dx;
 
         // Set trace score (in %)
         scores.trace = player.getTraceScore() * 100;

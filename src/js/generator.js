@@ -5,12 +5,14 @@ class Generator {
 
     /**
      * Constructor for the generator class. Gets all settings, changes the units accordingly.
-     * @param {{frequency: {min: {number}, max: {number}}, size: {min: {number}, max: {number}}, speed: {number}, distance: {number}}} bset
+     * @param {{frequency: {min: {number}, max: {number}}, size: {min: {number}, max: {number}}, speed: {number},
+     *        distance: {number}, animFrameRate: {min: {number}, max: {number}}}} bset
      *        - Settings for the blocks: frequency: Min. and max. appearance frequency in 1/s; size: Min. and max. size
-     *        in canvas width; speed: Speed in canvas width; distance: Minimum distance between block in canvas width.
-     * @param {{frequency: {min: {number}, max: {number}}, size: {number}, speed: {number}}} nset -
+     *        in canvas width; speed: Speed in canvas width; distance: Minimum distance between block in canvas width;
+     *        animFrameRate: Min. and max. animation frame rate in fps.
+     * @param {{frequency: {min: {number}, max: {number}}, size: {number}, speed: {number}, animFrameRate: {number}}}nset
      *        - Settings for the notes: frequency: Min. and max. appearance frequency in 1/s; size: size in canvas
-     *        width; speed: Speed in canvas width.
+     *        width; speed: Speed in canvas width; animFrameRate: Animation frame rate in fps
      */
     constructor(bset, nset) {
 
@@ -19,14 +21,16 @@ class Generator {
             frequency: {min: bset.frequency.min / 1000, max: bset.frequency.max / 1000},        // Min. and max. appearance frequency from 1/s to 1/ms
             size: {min: bset.size.min * canvasWidth, max: bset.size.max * canvasWidth},         // Min. and max. block size from canvas width to px
             speed: bset.speed * canvasWidth / 60,                                               // Block speed from canvas width/s to px/frame (assuming 60 fps)
-            distance: bset.distance * canvasWidth                                               // Minimum block distance from canvas width to px
+            distance: bset.distance * canvasWidth,                                              // Minimum block distance from canvas width to px
+            animFrameRate: {min: bset.animFrameRate.min, max: bset.animFrameRate.max}           // Min. and max. animation frame rate in fps
         };
 
         // convert note settings units and save it in the nSettings object
         this.nSettings = {
             frequency: {min: nset.frequency.min / 1000, max: nset.frequency.max / 1000},        // Min. and max. appearance frequency from 1/s to 1/ms
             size: nset.size * canvasWidth,                                                      // Note size from canvas width to px
-            speed: nset.speed * canvasWidth / 60                                                // Note speed from canvas width/s to px/frame (assuming 60 fps)
+            speed: nset.speed * canvasWidth / 60,                                                // Note speed from canvas width/s to px/frame (assuming 60 fps)
+            animFrameRate: nset.animFrameRate                                                    // Animation frame rate in fps
         };
 
     }
@@ -179,14 +183,30 @@ class Generator {
         // if the potential block is far enough away from the other blocks (create = true), create the sprite
         if (create) {
 
-            let block = new Sprite({
+            // create sprite sheet (with animation)
+            let blockSheet = SpriteSheet({
+                image: imageAssets['blob'],
+                frameWidth: 10,
+                frameHeight: 10,
+                animations: {
+                    blink: {
+                        frames: '0..2',
+                        frameRate: this.bSettings.animFrameRate.min +
+                            (this.bSettings.animFrameRate.max - this.bSettings.animFrameRate.min) * Math.random() // frame rate is set randomly
+                    }
+                }
+            });
+
+            // create sprite
+            let block = Sprite({
                 position: position,
                 anchor: {x: 0, y: 0.5},
                 width: width,
                 height: height,
                 color: 'blue',
                 dx: -this.bSettings.speed,
-                visible: true       // "true" if the sprite is visible (within the canvas) and should be rendered
+                visible: true,                          // "true" if the sprite is visible (within the canvas) and should be rendered
+                animations: blockSheet.animations       // add animation
             });
 
             this.blocks.push(block);                        // add the new block to the array of blocks
@@ -236,6 +256,20 @@ class Generator {
         // if the potential block is far enough away from the other blocks (create = true), create the sprite
         if (create) {
 
+            // create sprite sheet (with animation)
+            let noteSheet = SpriteSheet({
+                image: imageAssets['riff'],
+                frameWidth: 4,
+                frameHeight: 4,
+                animations: {
+                    blink: {
+                        frames: '0..3',
+                        frameRate: this.nSettings.animFrameRate
+                    }
+                }
+            });
+
+            // create sprite
             let note = new Sprite({
                 position: position,
                 anchor: {x: 0, y: 0.5},
@@ -243,7 +277,8 @@ class Generator {
                 height: height,
                 color: 'white',
                 dx: -this.nSettings.speed,
-                visible: true       // "true" if the sprite is visible (within the canvas) and should be rendered
+                visible: true,                      // "true" if the sprite is visible (within the canvas) and should be rendered
+                animations: noteSheet.animations    // add animation
             });
 
             this.notes.push(note);                        // add the new note to the array of notes

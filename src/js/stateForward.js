@@ -10,6 +10,9 @@ let stateForward = new State(
     // Update
     function(){
 
+        //Start line
+        startLine.update();
+
         // Blocks and notes
         generator.newBlock();       // Check for and create new blocks
         generator.newNote();       // Check for and create new notes
@@ -43,11 +46,22 @@ let stateForward = new State(
 
     // Render
     function(){
+
+        // Background ans start
+        background.render();
+
+        // Start line (only render when it is within the canvas
+        if (startLine.x >= -startLine.width) {
+            startLine.render();
+        }
+
         // Blocks and notes
         generator.renderAll();   // Render all blocks and notes
 
         // Player
         player.render();        // Render player
+
+
     },
 
     // On Enter
@@ -68,6 +82,10 @@ let stateForward = new State(
         // Reset scores
         scores.notes = 0;
         scores.trace = 0;
+
+        // Reset start line
+        startLine.x = 0;
+        startLine.y = 0;
     },
 
     // On Exit

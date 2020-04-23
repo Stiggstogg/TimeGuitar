@@ -35,8 +35,13 @@ let stateLoading = new State(
     // On Enter
     function(){
 
+        // load images
         setImagePath('img/');
-        load('player.png').then(function() {
+        load('player-sheet.png',
+            'background.png',
+            'start.png',
+            'blob.png',
+            'riff.png').then(function() {
             gameStates.changeTo('menu');
         });
 
@@ -45,13 +50,37 @@ let stateLoading = new State(
     // On Exit
     function(){
 
-        player.image = imageAssets['player'];
-        player.width = playerSettings.width * canvasWidth;
-        player.height = playerSettings.height * canvasWidth;
+        // add images to sprites
+        background.image = imageAssets['background'];
+        startLine.image = imageAssets['start'];
 
-        imageAssets['player'].onload(function() {
-            player.render();
-        })
+        // create player sprite sheet (for animation)
+        let playerSheet = SpriteSheet({
+            image: imageAssets['player-sheet'],
+            frameWidth: 11,
+            frameHeight: 16,
+            animations: {
+                rightStand: {
+                    frames: '4..7',
+                    frameRate: 10
+                },
+                leftStand: {
+                    frames: '8..11',
+                    frameRate: 10
+                },
+                rightWalk: {
+                    frames: '12..15',
+                    frameRate: 10
+                },
+                leftWalk: {
+                    frames: '16..19',
+                    frameRate: 10
+                }
+            }
+        });
+
+        player.animations = playerSheet.animations;     // add animation to player sprite
+
 
     }
 );

@@ -4,7 +4,8 @@ Initialize Kontra.js
 ==========================
 */
 
-let {init, GameLoop, initKeys, keyPressed, Vector, load, on, setImagePath, imageAssets} = kontra;        // initialize Kontra (and objects)
+let {init, GameLoop, initKeys, keyPressed, Vector,
+    load, on, setImagePath, imageAssets, SpriteSheet} = kontra;     // initialize Kontra (and objects)
 let {canvas, context} = init();                                     // get canvas and context
 
 initKeys();                                                         // initialize Keyboard support
@@ -42,24 +43,27 @@ const generalSettings = {
 
 // Settings for the player
 const playerSettings = {
-    startPosition: Vector(0.0, 0.5),            // player start position (relative to canvas width and height)
-    width: 0.03,                                // player width (relative to canvas width)
-    height: 0.05                                // player height (relative to canvas width)
+    startPosition: Vector(0.85, 0.5),            // player start position (relative to canvas width and height)
+    width: 0.055,                                // player width (relative to canvas width)
+    height: 0.08                                // player height (relative to canvas width)
 };
 
 // Settings for the blocks (obstacles) which are generated randomly
 const blockSettings = {
-    frequency: {min: 1.5, max: 7},          // appearance frequency of new blocks (in blocks / s)
-    size: {min: 0.02, max: 0.05},           // block sizes (relative to canvas width)
+    //frequency: {min: 1.5, max: 7},          // appearance frequency of new blocks (in blocks / s)
+    frequency: {min: 0.5, max: 1},          // appearance frequency of new blocks (in blocks / s)
+    size: {min: 0.05, max: 0.07},           // block sizes (relative to canvas width)
     speed: generalSettings.worldSpeed,      // block speed (canvas width / s)
-    distance: playerSettings.height*1.5     // minimum distance between blocks (relative to canvas width)
+    distance: playerSettings.height*1.5,    // minimum distance between blocks (relative to canvas width)
+    animFrameRate: {min: 2, max: 5}         // animation frame rate (fps)
 }
 
 // Settings for the notes (which need to be collected)
 const noteSettings = {
     frequency: {min: 0.05, max: 0.1},       // appearance frequency of new blocks (in blocks / s)
     size: 0.02,                             // note size (relative to canvas width)
-    speed: blockSettings.speed              // note speed (canvas width / s)
+    speed: blockSettings.speed,             // note speed (canvas width / s)
+    animFrameRate: 1                        // animation frame rate (fps)
 }
 
 /*
@@ -75,7 +79,9 @@ let player = new PlayerSprite({
     x: 100,
     y: 100,
     anchor: {x: 0.5, y: 0.5},
-    speed: worldSpeed*3
+    speed: worldSpeed*3,
+    width: playerSettings.width * canvasWidth,
+    height: playerSettings.height * canvasWidth
 });
 
 
@@ -97,3 +103,22 @@ World generation
 
 // Create the block generator
 generator = new Generator(blockSettings, noteSettings);
+
+// Background sprite generation (image is added later, after loading)
+let background = Sprite({
+    x: 0,
+    y: 0,
+    anchor: {x: 0, y: 0},
+    width: canvasWidth,
+    height: canvasHeight,
+});
+
+// Start sprite generation (image is added later, after loading)
+let startLine = Sprite({
+    x: 0,
+    y: 0,
+    anchor: {x: 0, y: 0},
+    width: canvasWidth,
+    height: canvasHeight,
+    dx: -worldSpeed
+});
