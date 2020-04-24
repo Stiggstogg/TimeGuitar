@@ -15,7 +15,7 @@ let stateLoading = new State(
     // Render
     function(){
 
-        context.font = '30px Arial';
+        context.font = '50px Bangers';
         context.fillStyle = 'white';
         context.textAlign = 'center';
         context.fillText('Loading...', canvasWidth*0.5, canvasHeight*0.5);

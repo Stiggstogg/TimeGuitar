@@ -25,12 +25,12 @@ let stateMenu = new State(
     // Render
     function(){
 
-        context.font = '30px Arial';
+        context.font = '50px Bangers';
         context.fillStyle = 'white';
         context.textAlign = 'center';
-        context.fillText('Time Guitar', canvasWidth*0.5, canvasHeight*0.3);
+        context.fillText('TIME GUITAR', canvasWidth*0.5, canvasHeight*0.3);
 
-        context.font = '20px Arial';
+        context.font = '20px Tahoma';
         context.fillText('Press SPACE to start the game', canvasWidth*0.5, canvasHeight*0.5);
 
     },

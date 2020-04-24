@@ -72,7 +72,7 @@ class TimeSprite extends Sprite.class {
     renderAllDates() {
 
         // text settings
-        context.font = '10px Arial';
+        context.font = '10px Tahoma';
         context.fillStyle = 'white';
         context.textAlign = 'center';
 

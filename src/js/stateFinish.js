@@ -25,16 +25,16 @@ let stateFinish = new State(
     // Render
     function(){
 
-        context.font = '30px Arial';
+        context.font = '30px Tahoma';
         context.fillStyle = 'white';
         context.textAlign = 'center';
         context.fillText('You made it back!', canvasWidth*0.5, canvasHeight*0.3);
 
-        context.font = '20px Arial';
+        context.font = '20px Tahoma';
         context.fillText('Riffs collected: ' + scores.notes.toFixed(0), canvasWidth*0.5, canvasHeight*0.4);
         context.fillText('Trace accuracy: ' + scores.trace.toFixed(0) + ' %', canvasWidth*0.5, canvasHeight*0.5);
 
-        context.font = '15px Arial';
+        context.font = '15px Tahoma';
 
         if (gameStates.getTimeInCurrentState() > 1) {
             context.fillText('Press SPACE to restart the game', canvasWidth*0.5, canvasHeight*0.75);
