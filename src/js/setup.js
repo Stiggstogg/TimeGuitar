@@ -5,7 +5,8 @@ Initialize Kontra.js
 */
 
 let {init, GameLoop, initKeys, keyPressed, Vector,
-    load, on, setImagePath, imageAssets, SpriteSheet} = kontra;     // initialize Kontra (and objects)
+    load, on, setImagePath, imageAssets, setAudioPath, audioAssets,
+    SpriteSheet} = kontra;     // initialize Kontra (and objects)
 let {canvas, context} = init();                                     // get canvas and context
 
 initKeys();                                                         // initialize Keyboard support

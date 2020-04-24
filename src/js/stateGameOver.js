@@ -41,10 +41,25 @@ let stateOver = new State(
     },
 
     // On Enter
-    function(){},
+    function(){
+
+        // Stop audio and set back to start
+        audioAssets['estring'].pause();
+        audioAssets['estring'].currentTime = 0;
+
+        // Start game over audio
+        audioAssets['loose'].play();
+
+    },
 
     // On Exit
-    function(){}
+    function(){
+
+        // Stop audio and set back to start
+        audioAssets['loose'].pause();
+        audioAssets['loose'].currentTime = 0;
+
+    }
 );
 
 gameStates.push(stateOver);

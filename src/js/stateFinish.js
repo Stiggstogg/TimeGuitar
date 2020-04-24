@@ -45,10 +45,25 @@ let stateFinish = new State(
     },
 
     // On Enter
-    function(){},
+    function(){
+
+        // Stop audio and set back to start
+        audioAssets['estring'].pause();
+        audioAssets['estring'].currentTime = 0;
+
+        // Start winning audio
+        audioAssets['win'].play();
+
+    },
 
     // On Exit
-    function(){}
+    function(){
+
+        // Stop audio and set back to start
+        audioAssets['win'].pause();
+        audioAssets['win'].currentTime = 0;
+
+    }
 );
 
 gameStates.push(stateFinish);

@@ -10,16 +10,6 @@ let stateLoading = new State(
     // Update
     function(){
 
-        // Check if 'Space' is pressed and start the game
-        if (keyPressed('space') && gameStates.getTimeInCurrentState() > 1) {
-            gameStates.changeTo('forward');
-        }
-
-        // Check if 'Esc' is pressed and start the game
-        if (keyPressed('esc') && gameStates.getTimeInCurrentState() > 1) {
-            gameStates.changeTo('menu');
-        }
-
     },
 
     // Render
@@ -35,15 +25,22 @@ let stateLoading = new State(
     // On Enter
     function(){
 
+        let ready = false;
+
         // load images
         setImagePath('img/');
+        setAudioPath('audio/');
         load('player-sheet.png',
             'background.png',
             'start.png',
             'blob.png',
             'riff.png',
-            'timeline.png').then(function() {
-            gameStates.changeTo('menu');
+            'timeline.png',
+            'estring.mp3',
+            'title.mp3',
+            'loose.mp3',
+            'win.mp3').then(function(ready) {
+                gameStates.changeTo('menu');
         });
 
     },
@@ -84,6 +81,11 @@ let stateLoading = new State(
 
         player.animations = playerSheet.animations;     // add animation to player sprite
 
+        // set looping for audio files
+        audioAssets['estring'].loop = true;
+        audioAssets['title'].loop = true;
+        audioAssets['loose'].loop = true;
+        audioAssets['win'].loop = true;
 
     }
 );

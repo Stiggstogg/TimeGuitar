@@ -34,6 +34,7 @@ let stateForward = new State(
         // Collision detection: Player - block
         if (player.blockCollide(generator.blocks)) {
             gameStates.changeTo('over');          // if collision happens: GAME OVER
+
         }
 
         // Collision detection: Player - note
@@ -107,6 +108,9 @@ let stateForward = new State(
         // Reset start line
         startLine.x = 0;
         startLine.y = 0;
+
+        // start audio
+        audioAssets['estring'].play();
     },
 
     // On Exit

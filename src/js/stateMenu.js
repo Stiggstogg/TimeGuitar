@@ -10,9 +10,14 @@ let stateMenu = new State(
     // Update
     function(){
 
+        // Try to start audio (can only start if the user already interacted with the window!)
+        audioAssets['title'].play().then(function() {
+            }).catch(function() {});
+
+
         // Check if 'Space' is pressed and start the game
         if (keyPressed('space')) {
-            gameStates.changeTo('forward');
+                gameStates.changeTo('forward');
         }
 
     },
@@ -31,10 +36,20 @@ let stateMenu = new State(
     },
 
     // On Enter
-    function(){},
+    function(){
+
+    },
 
     // On Exit
-    function(){}
+    function(){
+
+        // stop and reset audio
+        audioAssets['title'].pause();
+        audioAssets['title'].currentTime = 0;
+
+    },
 );
+
+stateMenu.ready = false;
 
 gameStates.push(stateMenu);
