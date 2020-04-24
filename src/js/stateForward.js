@@ -10,8 +10,16 @@ let stateForward = new State(
     // Update
     function(){
 
-        //Start line
+        // Start line
         startLine.update();
+
+        // Timelines
+        timeline1.update();
+        timeline2.update();
+        timeline1.reposition();
+        timeline2.reposition();
+        timeline1.updateAllDates();
+        timeline2.updateAllDates();
 
         // Blocks and notes
         generator.newBlock();       // Check for and create new blocks
@@ -47,8 +55,9 @@ let stateForward = new State(
     // Render
     function(){
 
-        // Background ans start
+        // Background
         background.render();
+
 
         // Start line (only render when it is within the canvas
         if (startLine.x >= -startLine.width) {
@@ -61,6 +70,11 @@ let stateForward = new State(
         // Player
         player.render();        // Render player
 
+        // Timelines
+        timeline1.render();
+        timeline2.render();
+        timeline1.renderAllDates();
+        timeline2.renderAllDates();
 
     },
 
@@ -78,6 +92,13 @@ let stateForward = new State(
 
         // Reset the block generator
         generator.start();
+
+        // Reset the timelines
+        timeline1.reset();
+        timeline2.reset();
+
+        timeline1.addAllDates();
+        timeline2.addAllDates();
 
         // Reset scores
         scores.notes = 0;

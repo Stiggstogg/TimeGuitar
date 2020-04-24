@@ -41,7 +41,8 @@ let stateLoading = new State(
             'background.png',
             'start.png',
             'blob.png',
-            'riff.png').then(function() {
+            'riff.png',
+            'timeline.png').then(function() {
             gameStates.changeTo('menu');
         });
 
@@ -53,6 +54,8 @@ let stateLoading = new State(
         // add images to sprites
         background.image = imageAssets['background'];
         startLine.image = imageAssets['start'];
+        timeline1.image = imageAssets['timeline'];
+        timeline2.image = imageAssets['timeline'];
 
         // create player sprite sheet (for animation)
         let playerSheet = SpriteSheet({

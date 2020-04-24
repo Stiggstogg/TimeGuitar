@@ -17,6 +17,14 @@ let stateBackward = new State(
             startLine.x = 0;
         }
 
+        // Timelines
+        timeline1.update();
+        timeline2.update();
+        timeline1.reposition();
+        timeline2.reposition();
+        timeline1.updateAllDates();
+        timeline2.updateAllDates();
+
         // Blocks and notes
         generator.updateAll();      // Update all blocks and notes
 
@@ -53,6 +61,12 @@ let stateBackward = new State(
 
         // Player
         player.render();        // Render player
+
+        // Timelines
+        timeline1.render();
+        timeline2.render();
+        timeline1.renderAllDates();
+        timeline2.renderAllDates();
     },
 
     // On Enter
@@ -62,6 +76,8 @@ let stateBackward = new State(
         player.changeDirection();
         generator.changeDirection();
         startLine.dx = -startLine.dx;
+        timeline1.changeDirection();
+        timeline2.changeDirection();
     },
 
     // On Exit
@@ -71,6 +87,8 @@ let stateBackward = new State(
         player.changeDirection();
         generator.changeDirection();
         startLine.dx = -startLine.dx;
+        timeline1.changeDirection();
+        timeline2.changeDirection();
 
         // Set trace score (in %)
         scores.trace = player.getTraceScore() * 100;

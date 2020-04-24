@@ -6,13 +6,15 @@ class Generator {
     /**
      * Constructor for the generator class. Gets all settings, changes the units accordingly.
      * @param {{frequency: {min: {number}, max: {number}}, size: {min: {number}, max: {number}}, speed: {number},
-     *        distance: {number}, animFrameRate: {min: {number}, max: {number}}}} bset
+     *        distance: {number}, animFrameRate: {min: {number}, max: {number}}, yRange: {min: {number}, max: {number}}}} bset
      *        - Settings for the blocks: frequency: Min. and max. appearance frequency in 1/s; size: Min. and max. size
      *        in canvas width; speed: Speed in canvas width; distance: Minimum distance between block in canvas width;
-     *        animFrameRate: Min. and max. animation frame rate in fps.
-     * @param {{frequency: {min: {number}, max: {number}}, size: {number}, speed: {number}, animFrameRate: {number}}}nset
+     *        animFrameRate: Min. and max. animation frame rate in fps; yRange: Min. and max. y range in canvas height.
+     * @param {{frequency: {min: {number}, max: {number}}, size: {number}, speed: {number}, animFrameRate: {number},
+     *        yRange: {min: {number}, max: {number}}}} nset
      *        - Settings for the notes: frequency: Min. and max. appearance frequency in 1/s; size: size in canvas
-     *        width; speed: Speed in canvas width; animFrameRate: Animation frame rate in fps
+     *        width; speed: Speed in canvas width; animFrameRate: Animation frame rate in fps; yRange: Min. and max.
+     *        y range in canvas height.
      */
     constructor(bset, nset) {
 
@@ -22,7 +24,8 @@ class Generator {
             size: {min: bset.size.min * canvasWidth, max: bset.size.max * canvasWidth},         // Min. and max. block size from canvas width to px
             speed: bset.speed * canvasWidth / 60,                                               // Block speed from canvas width/s to px/frame (assuming 60 fps)
             distance: bset.distance * canvasWidth,                                              // Minimum block distance from canvas width to px
-            animFrameRate: {min: bset.animFrameRate.min, max: bset.animFrameRate.max}           // Min. and max. animation frame rate in fps
+            animFrameRate: {min: bset.animFrameRate.min, max: bset.animFrameRate.max},          // Min. and max. animation frame rate in fps
+            yRange: {min: bset.yRange.min * canvasHeight, max: bset.yRange.max * canvasHeight } // Min. and max. y range from canvas height to px
         };
 
         // convert note settings units and save it in the nSettings object
@@ -30,7 +33,8 @@ class Generator {
             frequency: {min: nset.frequency.min / 1000, max: nset.frequency.max / 1000},        // Min. and max. appearance frequency from 1/s to 1/ms
             size: nset.size * canvasWidth,                                                      // Note size from canvas width to px
             speed: nset.speed * canvasWidth / 60,                                                // Note speed from canvas width/s to px/frame (assuming 60 fps)
-            animFrameRate: nset.animFrameRate                                                    // Animation frame rate in fps
+            animFrameRate: nset.animFrameRate,                                                    // Animation frame rate in fps
+            yRange: {min: nset.yRange.min * canvasHeight, max: nset.yRange.max * canvasHeight } // Min. and max. y range from canvas height to px
         };
 
     }
@@ -136,8 +140,12 @@ class Generator {
         return this.axisOverlap(note.x, note.x + note.width, block.x - note.width/2,
             block.x + block.width + note.width/2) &&                                        // check if the projections to the x-axis of note and block overlap
             (
-                ( blockUpperEdgeY < distance.y && blockUpperEdgeY > 0 && noteLowerEdgeY < blockUpperEdgeY ) ||                          // check if the block is to close to the upper canvas limit (but still a gap is available) and check if note is between it
-                ( blockLowerEdgeY > canvasHeight - distance.y && blockLowerEdgeY < canvasHeight && noteUpperEdgeY > blockLowerEdgeY )   // check if the block is to close to the lower canvas limit (but still a gap is available) and check if note is between it
+                ( blockUpperEdgeY < this.bSettings.min + distance.y &&
+                    blockUpperEdgeY > this.bSettings.min &&
+                    noteLowerEdgeY < blockUpperEdgeY ) ||                          // check if the block is to close to the upper canvas limit (but still a gap is available) and check if note is between it
+                ( blockLowerEdgeY > this.bSettings.max - distance.y &&
+                    blockLowerEdgeY < this.bSettings.max &&
+                    noteUpperEdgeY > blockLowerEdgeY )   // check if the block is to close to the lower canvas limit (but still a gap is available) and check if note is between it
             );
 
     }
@@ -149,7 +157,7 @@ class Generator {
     createNewBlock() {
 
         // Calculate next block parameters (size and position)
-        const position = Vector(canvasWidth*1.2, Math.random() * canvasHeight);                // position vector, blocks are created earlier (outside of the canvas) so that later notes are added. In this the distance to notes does not need to be checked.
+        const position = Vector(canvasWidth*1.2, this.bSettings.yRange.min + (this.bSettings.yRange.max - this.bSettings.yRange.min) * Math.random());    // position vector, blocks are created earlier (outside of the canvas) so that later notes are added. In this the distance to notes does not need to be checked.
         const width = this.bSettings.size.min + (this.bSettings.size.max - this.bSettings.size.min) * Math.random();     // width
         const height = this.bSettings.size.min + (this.bSettings.size.max - this.bSettings.size.min) * Math.random();    // height
 
@@ -221,7 +229,7 @@ class Generator {
     createNewNote() {
 
         // Calculate next note parameters (size and position)
-        const position = Vector(canvasWidth, Math.random() * canvasHeight);                // position vector
+        const position = Vector(canvasWidth, this.nSettings.yRange.min + (this.nSettings.yRange.max - this.nSettings.yRange.min) * Math.random());   // position vector
         const width = this.nSettings.size;     // width
         const height = this.nSettings.size;    // height
 
