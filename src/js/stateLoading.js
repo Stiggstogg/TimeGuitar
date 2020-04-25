@@ -102,8 +102,11 @@ let stateLoading = new State(
                 rock: {
                     frames: '12..15',
                     frameRate: 7
+                },
+                smash: {
+                    frames: '20..23',
+                    frameRate: 7
                 }
-
             }
         });
         menuGuitarist.animations = menuGuitaristSheet.animations;     // add animation to sprite

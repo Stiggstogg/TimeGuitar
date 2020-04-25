@@ -33,8 +33,8 @@ let stateForward = new State(
 
         // Collision detection: Player - block
         if (player.blockCollide(generator.blocks)) {
-            gameStates.changeTo('over');          // if collision happens: GAME OVER
-
+            scores.touchedBlock = true;                         // set game over reason
+            gameStates.changeTo('over');            // if collision happens: GAME OVER
         }
 
         // Collision detection: Player - note
@@ -44,6 +44,7 @@ let stateForward = new State(
 
         // Check if a note left the canvas (was forgotten to collect)
         if (generator.lostNote()) {
+            scores.touchedBlock = false;            // set game over reason
             gameStates.changeTo('over');
         }
 

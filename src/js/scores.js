@@ -43,9 +43,19 @@ class Scores {
             'DJ Bluescreen'
         ];
 
+        // Game over consequences
+        this.over = [
+            'Nobody loves you anymore, not even your cat!',
+            'You got heavily addicted to country music!',
+            'The new No. 1 hit was made by a DJ on his tablet!'
+        ]
+
         // Setup the temporary values for songs, bands and consequences
         this.tempSongs = Object.assign(this.songs);
         this.tempBands = Object.assign(this.bands);
+
+        // Initialize game over reason
+        this.touchedBlock = true;       // True if the player touched a block, false if he forgot a riff
 
     }
 
@@ -75,7 +85,7 @@ class Scores {
         this.rank = rank;
     }
 
-    getRandomElement(array) {
+    getRandomSongBand(array) {
 
         let i = this.getRandomInt(array.length);    // get a random index
 
@@ -86,11 +96,15 @@ class Scores {
     }
 
     getSong() {
-        return this.getRandomElement(this.tempSongs)
+        return this.getRandomSongBand(this.tempSongs)
     }
 
     getBand() {
-        return this.getRandomElement(this.tempBands)
+        return this.getRandomSongBand(this.tempBands)
+    }
+
+    getOver() {
+        return this.over[this.getRandomInt(this.over.length)];
     }
 
     getRandomInt(max) {
