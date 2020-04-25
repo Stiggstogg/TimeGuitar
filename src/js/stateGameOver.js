@@ -40,14 +40,14 @@ let stateOver = new State(
         context.textAlign = 'left';
 
         if (scores.touchedBlock) {
-            context.fillText('You touched a time blob!', canvasWidth * this.posx, canvasHeight * this.posy);
+            context.fillText('You touched a time singularity!', canvasWidth * this.posx, canvasHeight * this.posy);
         }
         else {
             context.fillText('You forgot a riff!', canvasWidth * this.posx, canvasHeight * this.posy);
         }
 
         context.fillText('Your song has the same lame riffs as always!', canvasWidth * this.posx, canvasHeight * (this.posy + this.separationy));
-        context.fillText('Due to your failed time traveling things got even worse:', canvasWidth * this.posx, canvasHeight * (this.posy + 2.5 * this.separationy));
+        context.fillText('Due to your failed time traveling things got', canvasWidth * this.posx, canvasHeight * (this.posy + 2.5 * this.separationy));
         context.fillText('even worse:', canvasWidth * this.posx, canvasHeight * (this.posy + 3.5 * this.separationy));
 
         context.fillStyle = 'blue';

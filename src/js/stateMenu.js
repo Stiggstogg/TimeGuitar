@@ -84,7 +84,7 @@ let stateMenu = new State(
         else {
             context.fillStyle = 'black';
         }
-        context.fillText('Who\'s responsible for this noise?', canvasWidth*0.5, canvasHeight*0.45)
+        context.fillText('Who\'s responsible for this noise?', canvasWidth*0.5, canvasHeight*0.45);
 
         // Render key information
         context.fillStyle = 'white';

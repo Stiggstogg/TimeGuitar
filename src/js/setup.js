@@ -6,11 +6,16 @@ Initialize Kontra.js
 
 let {init, GameLoop, initKeys, keyPressed, Vector,
     load, on, setImagePath, imageAssets, setAudioPath, audioAssets,
-    SpriteSheet} = kontra;     // initialize Kontra (and objects)
+    SpriteSheet, bindKeys} = kontra;     // initialize Kontra (and objects)
 let {canvas, context} = init();                                     // get canvas and context
 
 initKeys();                                                         // initialize Keyboard support
 
+
+// prevent default behavior of these keys in browser!
+bindKeys(['up', 'down', 'left', 'right', 'space', 'enter', 'esc'], function(e) {
+    e.preventDefault();
+});
 
 /*
 ==========================
@@ -42,8 +47,8 @@ const generalSettings = {
     worldSpeed: 0.1,                            // speed of the world relative to canvas width per second (assuming 60 fps)
     timeDifference: 5,                          // time difference between one major tick on the timeline
     playAreaY: {min: 0, max: 0.8},              // play area (where the character can move and all the action happens :D) in canvas height
-    maxNotes: 20,                               // used for rank calculation
-    maxAccuracy: 100                            // used for rank calculation
+    maxNotes: 10,                               // used for rank calculation
+    maxAccuracy: 80                            // used for rank calculation
 }
 
 // Settings for the player
