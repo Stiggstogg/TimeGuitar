@@ -37,9 +37,9 @@ let stateMenu = new State(
             }).catch(function() {});
 
 
-        // Check if 'Space' is pressed and start the game
+        // Check if 'Enter' is pressed and start the game
         if (keyPressed('enter') && this.selection === 1) {
-            gameStates.changeTo('forward');
+            gameStates.changeTo('story');
         }
         else if (keyPressed('enter') && this.selection === 2) {
             gameStates.changeTo('credits');
