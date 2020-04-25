@@ -101,6 +101,9 @@ let stateMenu = new State(
         // Set the arrow to the correct position
         this.lastUpDownPress = Date.now();
 
+        // Set animation for guitar player
+        menuGuitarist.playAnimation('cool');
+
     },
 
     // On Exit

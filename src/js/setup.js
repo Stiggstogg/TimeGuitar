@@ -41,7 +41,9 @@ Settings
 const generalSettings = {
     worldSpeed: 0.1,                            // speed of the world relative to canvas width per second (assuming 60 fps)
     timeDifference: 5,                          // time difference between one major tick on the timeline
-    playAreaY: {min: 0, max: 0.8}               // play area (where the character can move and all the action happens :D) in canvas height
+    playAreaY: {min: 0, max: 0.8},              // play area (where the character can move and all the action happens :D) in canvas height
+    maxNotes: 20,                               // used for rank calculation
+    maxAccuracy: 100                            // used for rank calculation
 }
 
 // Settings for the player
@@ -98,11 +100,8 @@ let player = new PlayerSprite({
 player.position.clamp(player.width/2,  generalSettings.playAreaY.min * canvasHeight + player.height/2,
     canvasWidth-player.width/2, generalSettings.playAreaY.max * canvasHeight-player.height/2);
 
-// Scores object
-let scores = {
-    notes: 0,
-    trace: 0
-}
+// Initialize Scores object
+let scores = new Scores(generalSettings.maxNotes, generalSettings.maxAccuracy);
 
 /*
 =============================
@@ -165,6 +164,34 @@ let menuArrow = Sprite({
     p1: {x: 0.69 * canvasWidth, y: 0.325 * canvasHeight},
     p2: {x: 0.845 * canvasWidth, y: 0.425 * canvasHeight}
 });
+
+// Blob in explanation screen
+let menuBlock = Sprite({
+    x: 0.94 * canvasWidth,
+    y: 0.24 * canvasHeight,
+    anchor: {x: 0.5, y: 0.5},
+    width: (blockSettings.size.max + blockSettings.size.min)/2 * canvasWidth,
+    height: (blockSettings.size.max + blockSettings.size.min)/2 * canvasWidth
+});
+
+// Riff in explanation screen
+let menuNote = Sprite({
+    x: 0.94 * canvasWidth,
+    y: 0.12 * canvasHeight,
+    anchor: {x: 0.5, y: 0.5},
+    width: noteSettings.size * canvasWidth,
+    height: noteSettings.size * canvasWidth
+});
+
+// Charts in finish screen
+let charts = Sprite({
+    x: 0.73 * canvasWidth,
+    y: 0.30 * canvasHeight,
+    anchor: {x: 0.5, y: 0},
+    width: 0.45 * canvasWidth,
+    height: 0.3 * canvasWidth
+});
+
 
 /*
 ==========================

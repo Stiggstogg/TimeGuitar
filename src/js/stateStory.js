@@ -11,6 +11,8 @@ let stateStory = new State(
     function(){
 
         menuGuitarist.update();
+        menuBlock.update();
+        menuNote.update();
 
         // Check Enter is pressed and proceed accorindgly
         if (Date.now() - this.lastEnterPress > 300 && keyPressed('enter')) {
@@ -51,7 +53,7 @@ let stateStory = new State(
             context.fillText('Gibson SG Special Faded with a broken neck and', this.posx * canvasWidth, (this.posy + this.separationy * 5.5) * canvasHeight);
             context.fillText('serial number 00484505.', this.posx * canvasWidth, (this.posy + this.separationy * 6.5) * canvasHeight);
             context.fillText('Now he wants to travel to the future, COLLECT all', this.posx * canvasWidth, (this.posy + this.separationy * 8) * canvasHeight);
-            context.fillText('cool riffs, COME BACK and get a No.1 hit!', this.posx * canvasWidth, (this.posy + this.separationy * 9) * canvasHeight);
+            context.fillText('cool riffs, COME BACK and get a No. 1 hit!', this.posx * canvasWidth, (this.posy + this.separationy * 9) * canvasHeight);
 
             context.textAlign = 'right';
             context.font = '20px Tahoma';
@@ -59,8 +61,8 @@ let stateStory = new State(
 
         }
         else {                              // Explanation text
-            context.fillText('Use the ARROW keys to move and collect ALL cool', this.posx * canvasWidth, this.posy * canvasHeight);
-            context.fillText('riffs from the future (the more the better)!', this.posx * canvasWidth, (this.posy + this.separationy) * canvasHeight);
+            context.fillText('Use the ARROW keys to move and collect ALL', this.posx * canvasWidth, this.posy * canvasHeight);
+            context.fillText('cool riffs from the future (the more the better)!', this.posx * canvasWidth, (this.posy + this.separationy) * canvasHeight);
             context.fillText('Avoid getting too close to the time singularity', this.posx * canvasWidth, (this.posy + this.separationy * 2.5) * canvasHeight);
             context.fillText('blobs.', this.posx * canvasWidth, (this.posy + this.separationy * 3.5) * canvasHeight);
             context.fillText('If you miss a riff or touch a time singularity', this.posx * canvasWidth, (this.posy + this.separationy * 5) * canvasHeight);
@@ -76,6 +78,9 @@ let stateStory = new State(
             context.textAlign = 'right';
             context.font = '20px Tahoma';
             context.fillText('Press ENTER to start your journey!', canvasWidth*0.99, canvasHeight*0.98);
+
+            menuBlock.render();
+            menuNote.render();
         }
 
 

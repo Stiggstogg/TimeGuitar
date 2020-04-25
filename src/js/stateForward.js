@@ -48,7 +48,7 @@ let stateForward = new State(
         }
 
         // Check if 'Space' is pressed (to travel back in time) and change the game state to backward
-        if (keyPressed('space') && gameStates.getTimeInCurrentState() > 3) {
+        if (keyPressed('space') && gameStates.getTimeInCurrentState() > 1) {
             gameStates.changeTo('backward');
         }
     },
@@ -76,6 +76,14 @@ let stateForward = new State(
         timeline2.render();
         timeline1.renderAllDates();
         timeline2.renderAllDates();
+
+        // Help text
+        if (gameStates.getTimeInCurrentState() > 1) {
+            context.textAlign = 'right';
+            context.font = '15px Tahoma';
+            context.fillText('Press SPACE to travel back!', canvasWidth*0.99, canvasHeight*0.98);
+        }
+
 
     },
 
@@ -106,8 +114,7 @@ let stateForward = new State(
         timeline2.addAllDates();
 
         // Reset scores
-        scores.notes = 0;
-        scores.trace = 0;
+        scores.reset();
 
         // Reset start line
         startLine.x = 0;

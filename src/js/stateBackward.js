@@ -67,6 +67,11 @@ let stateBackward = new State(
         timeline2.render();
         timeline1.renderAllDates();
         timeline2.renderAllDates();
+
+        // Help text
+        context.textAlign = 'right';
+        context.font = '15px Tahoma';
+        context.fillText('Take the same way back!', canvasWidth*0.99, canvasHeight*0.98);
     },
 
     // On Enter

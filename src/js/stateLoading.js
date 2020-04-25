@@ -40,6 +40,7 @@ let stateLoading = new State(
             'fans.png',
             'crowd.png',
             'arrow.png',
+            'charts.png',
             'estring.mp3',
             'title.mp3',
             'loose.mp3',
@@ -56,6 +57,7 @@ let stateLoading = new State(
         startLine.image = imageAssets['start'];
         timeline1.image = imageAssets['timeline'];
         timeline2.image = imageAssets['timeline'];
+        charts.image = imageAssets['charts'];
         menuBackground.image = imageAssets['menuBackground'];
 
         // create player sprite sheet (for animation)
@@ -93,10 +95,15 @@ let stateLoading = new State(
             frameWidth: 11,
             frameHeight: 16,
             animations: {
-                rock: {
+                cool: {
                     frames: '4..7',
                     frameRate: 15
+                },
+                rock: {
+                    frames: '12..15',
+                    frameRate: 7
                 }
+
             }
         });
         menuGuitarist.animations = menuGuitaristSheet.animations;     // add animation to sprite
@@ -157,7 +164,38 @@ let stateLoading = new State(
         });
         menuArrow.animations = menuArrowSheet.animations;     // add animation to sprite
 
+        // create menu block sprite sheet
+        let menuBlockSheet = SpriteSheet({
+            image: imageAssets['blob'],
+            frameWidth: 10,
+            frameHeight: 10,
+            animations: {
+                blink: {
+                    frames: '0..2',
+                    frameRate: (blockSettings.animFrameRate.min + blockSettings.animFrameRate.max)/2
+                }
+            }
+        });
+
+        menuBlock.animations = menuBlockSheet.animations;     // add animation to sprite
+
+        // create menu note sprite sheet
+        let menuNoteSheet = SpriteSheet({
+            image: imageAssets['riff'],
+            frameWidth: 4,
+            frameHeight: 4,
+            animations: {
+                blink: {
+                    frames: '0..3',
+                    frameRate: noteSettings.animFrameRate
+                }
+            }
+        });
+
+        menuNote.animations = menuNoteSheet.animations;          // add animation to sprite
+
         // set looping for audio files
+        // -----------------------------
         audioAssets['estring'].loop = true;
         audioAssets['title'].loop = true;
         audioAssets['loose'].loop = true;
