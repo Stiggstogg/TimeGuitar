@@ -82,6 +82,10 @@ let stateForward = new State(
     // On Enter
     function(){
 
+        // Stop menu audio
+        audioAssets['title'].pause();
+        audioAssets['title'].currentTime = 0;
+
         // Set player at starting position and speed
         player.x = playerSettings.startPosition.x * canvasWidth;
         player.y = playerSettings.startPosition.y * canvasHeight;

@@ -105,8 +105,70 @@ let scores = {
 }
 
 /*
+=============================
+Menu / Credits /... Screens
+=============================
+ */
+
+// background of the menu screens
+let menuBackground = Sprite({
+    x: 0,
+    y: 0,
+    anchor: {x: 0, y: 0},
+    width: canvasWidth,
+    height: canvasHeight
+});
+
+// guitarist in the menus
+let menuGuitarist = Sprite({
+    x: 0.12 * canvasWidth,
+    y: 0.58 * canvasHeight,
+    anchor: {x: 0, y: 1},
+    width: 0.1*canvasWidth,
+    height: 0.15*canvasWidth
+});
+
+// fan 1 in the menus
+let menuFan1 = Sprite({
+    x: 0.45 * canvasWidth,
+    y: 0.94 * canvasHeight,
+    anchor: {x: 0, y: 1},
+    width: 0.1*canvasWidth,
+    height: 0.15*canvasWidth
+});
+
+// fan 1 in the menus
+let menuFan2 = Sprite({
+    x: 0.73 * canvasWidth,
+    y: 0.85 * canvasHeight,
+    anchor: {x: 0, y: 1},
+    width: 0.1*canvasWidth,
+    height: 0.15*canvasWidth
+});
+
+// crowd in the menus
+let menuCrowd = Sprite({
+    x: canvasWidth,
+    y: canvasHeight,
+    anchor: {x: 1, y: 1},
+    width: 0.73 * canvasWidth,
+    height: 0.27 * canvasWidth
+});
+
+// arrow in menu
+let menuArrow = Sprite({
+    x: 0,
+    y: 0,
+    anchor: {x: 1, y: 0.5},
+    width: 0.1 * canvasWidth,
+    height: 0.046 * canvasWidth,
+    p1: {x: 0.69 * canvasWidth, y: 0.325 * canvasHeight},
+    p2: {x: 0.845 * canvasWidth, y: 0.425 * canvasHeight}
+});
+
+/*
 ==========================
-World generation
+Game world generation
 ==========================
  */
 
@@ -119,7 +181,7 @@ let background = Sprite({
     y: 0,
     anchor: {x: 0, y: 0},
     width: canvasWidth,
-    height: canvasHeight,
+    height: canvasHeight
 });
 
 // Start sprite generation (image is added later, after loading)
@@ -155,3 +217,4 @@ let timeline2 = new TimeSprite({
     firstSprite: false,
     dx: -worldSpeed
 });
+
