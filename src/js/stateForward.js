@@ -84,8 +84,6 @@ let stateForward = new State(
             context.font = '15px Tahoma';
             context.fillText('Press SPACE to travel back!', canvasWidth*0.99, canvasHeight*0.98);
         }
-
-
     },
 
     // On Enter

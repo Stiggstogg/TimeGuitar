@@ -31,7 +31,22 @@ class Scores {
             'I like Dolphins',
             'Hot Potato Pillow',
             'Three Way Switch',
-            'Guitar Music is Dead'
+            'Guitar Music is Dead',
+            'Turtles on my Back',
+            'Is it You?',
+            'Cucumber Timelapse',
+            'Yolo!',
+            'Rabbit Rock n Roll',
+            'Tomato Blues',
+            'Tissue Tragedy',
+            'Mandolin Madness',
+            'Twilight Tandem Ride',
+            'Full Moon Makeup',
+            'Alluring ATM',
+            'Oxygen Love',
+            'Garlic God',
+            'Monkey Tooth',
+            'Highway to Ham'
         ];
 
         // Bands (Array)
@@ -40,14 +55,46 @@ class Scores {
             'The Sword Crew',
             'The Pirate Dancers',
             'The Killerbees',
-            'DJ Bluescreen'
+            'DJ Bluescreen',
+            'The Vacuum Cleaners',
+            'The Keyboard Cleaners',
+            'Nine Cat Lives',
+            'Ball of Wool',
+            'Danger Debts',
+            'Wobbly Chanters',
+            'Horseshoe Honey',
+            'The Flaming Fool',
+            'Toxic Trotters',
+            'The Charming Coconut',
+            'Mozzarella Choir',
+            'The Broomsticks',
+            'Sunny Solvents',
+            'Adorable Antibodies',
+            'Jane and her Knives'
         ];
 
         // Game over consequences
         this.over = [
             'Nobody loves you anymore, not even your cat!',
             'You got heavily addicted to country music!',
-            'The new No. 1 hit was made by a DJ on his tablet!'
+            'The new No. 1 hit was made by a DJ on his tablet!',
+            'Your salad spinner was stolen!',
+            'Your favourite TV show was discontinued!',
+            'Fidget spinners are trendy again!',
+            'You are now a proud owner of a selfie stick!',
+            'All of your 12 kids love vegetables!',
+            'All baked goods contain raisins!',
+            'Internet Explorer 2.0 is the only web browser!',
+            'All cats were replaced by dogs!',
+            'Netflix does not exist!',
+            'Four new Matrix sequels were announced!',
+            'Pasta was not invented yet!',
+            'AZERTY is the new standard keyboard layout!',
+            'Inch is now the SI unit for length!',
+            'It is 2073: The Rolling Stones are still on Tour!',
+            'MTV is the only TV channel!',
+            'Someone pissed in your beer!',
+            'Your body was taken over by an alien!'
         ]
 
         // Setup the temporary values for songs, bands and consequences
@@ -63,9 +110,19 @@ class Scores {
         this.notes = 0;
         this.trace = 0;
 
-        // Reset temporary values for songs, bands and consequences
-        this.tempSongs = Object.assign(this.songs);
-        this.tempBands = Object.assign(this.bands);
+        // Reset temporary values for songs, and bands
+        this.tempSongs = [];
+        this.tempBands = [];
+
+        for (let i = 0; i < this.songs.length; i++) {
+            let getSong = Object.assign(this.songs[i]);
+            this.tempSongs.push(getSong);
+        }
+
+        for (let i = 0; i < this.bands.length; i++) {
+            let getBand = Object.assign(this.bands[i]);
+            this.tempBands.push(getBand);
+        }
 
     }
 
@@ -89,8 +146,8 @@ class Scores {
 
         let i = this.getRandomInt(array.length);    // get a random index
 
-        let song = array[i];                    // get the song with this index
-        array.splice(i,1);                      // remove this element from the temporary array
+        let song = array[i];                        // get the song with this index
+        array.splice(i,1);                          // remove this element from the temporary array
 
         return song
     }

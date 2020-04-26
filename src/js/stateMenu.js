@@ -89,7 +89,7 @@ let stateMenu = new State(
         // Render key information
         context.fillStyle = 'white';
         context.textAlign = 'right';
-        context.font = '10px Tahoma';
+        context.font = '13px Tahoma';
         context.fillText('Use ARROW KEYS to choose and ENTER to select!', canvasWidth*0.99, canvasHeight*0.98);
 
 

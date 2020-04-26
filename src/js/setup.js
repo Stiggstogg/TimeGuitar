@@ -17,6 +17,15 @@ bindKeys(['up', 'down', 'left', 'right', 'space', 'enter', 'esc'], function(e) {
     e.preventDefault();
 });
 
+// Add the focus event listener to make sure the window is in focus
+window.addEventListener("mousemove", (e) => {
+    window.focus();
+});
+
+window.addEventListener("mousedown", (e) => {
+    window.focus();
+});
+
 /*
 ==========================
 Properties
@@ -47,8 +56,8 @@ const generalSettings = {
     worldSpeed: 0.1,                            // speed of the world relative to canvas width per second (assuming 60 fps)
     timeDifference: 5,                          // time difference between one major tick on the timeline
     playAreaY: {min: 0, max: 0.8},              // play area (where the character can move and all the action happens :D) in canvas height
-    maxNotes: 10,                               // used for rank calculation
-    maxAccuracy: 80                            // used for rank calculation
+    maxNotes: 25,                               // used for rank calculation
+    maxAccuracy: 95                            // used for rank calculation
 }
 
 // Settings for the player
