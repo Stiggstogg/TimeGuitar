@@ -9,6 +9,8 @@ class PlayerSprite extends Sprite.class {
         // Set the direction of the player (1: forward (from left to right), 0: backward (from right to left))
         this.direction = 1;
 
+        this.createCollisionBox();
+
     }
 
     /**
@@ -55,15 +57,15 @@ class PlayerSprite extends Sprite.class {
             this.playAnimation('leftWalk');
             this.lookRight = false;                     // set orientation (look direction)
         }
-
-
     }
 
     blockCollide(blocks) {
         let collide = false;
 
+        this.updateCollisionBox();
+
         for (let i = 0; i < blocks.length; i++) {
-            if (this.collidesWith(blocks[i])) {
+            if (this.collisionBox.collidesWith(blocks[i])) {            // Check the collision with the collision box!
                 return true;
             }
         }
@@ -169,6 +171,34 @@ class PlayerSprite extends Sprite.class {
      */
     isBack(zero) {
        return this.x - zero <= this.startX
+    }
+
+    /**
+     * Create the box (sprite) which is used to detect collision between the player and the blocks.
+     */
+    createCollisionBox() {
+        this.collisionBox = Sprite({
+            x: 0,
+            y: 0,
+            anchor: {x: 0.5, y: 0.5},
+            width: this.width * 3/11,       // It's 3 pixels wide based on the original image width (11 px), the sprite is then resized in the game, therefore it is calculated based on the width of the player
+            height: this.height * 10/16     // It's 10 pixels high based on the original image height (16 px), the sprite is then resized in the game, therefore it is calculated based on the height of the player
+        })
+    }
+
+    /**
+     * Update the box (spirte) which is used to detect collision between the player and the blocks.
+     */
+    updateCollisionBox() {
+
+        this.collisionBox.y = this.y;
+
+        if (this.lookRight) {
+            this.collisionBox.x = this.x - this.width/2 + this.width / 11 * 3.5; // The position is always 3.5 / 11 to the left of the left edge of the player sprite (anchor for both is {x: 0.5, y: 0.5})
+        }
+        else {
+            this.collisionBox.x = this.x - this.width/2 + this.width / 11 * 7.5; // The position is always 7.5 / 11 to the left of the left edge of the player sprite (anchor for both is {x: 0.5, y: 0.5})
+        }
     }
 
 }
